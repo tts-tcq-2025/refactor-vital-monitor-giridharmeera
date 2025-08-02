@@ -28,10 +28,7 @@ bool checkVital(const VitalCheck& vital, std::function<void(const std::string&)>
 
 int vitalsOk(float temperature, float pulseRate, float spo2,
              std::function<void(const std::string&)> alert) {
-    if (!alert) {
-        alert = defaultAlert;
-    }
-
+std::function<void(const std::string&)> effectiveAlert = alert ? alert : defaultAlert;
 const VitalCheck vitals[] = {
         {"Temperature", temperature, 95.0, 102.0},
         {"Pulse Rate", pulseRate, 60.0, 100.0},
