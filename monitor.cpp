@@ -32,25 +32,21 @@ bool checkVital(const VitalCheck& vital, std::function<void(const std::string&)>
 // Main function to check all vitals 
 int vitalsOk(float temperature, float pulseRate, float spo2, std::function<void(const std::string&)> alert) 
 {
-    if (!alert) 
-    {
-        alert = defaultAlert;
-    }
-
+    bool allVitalsOk = true;
     VitalCheck vitals[] = 
     {
         {"Temperature", temperature, 95.0, 102.0},
         {"Pulse Rate", pulseRate, 60.0, 100.0},
         {"Oxygen Saturation", spo2, 90.0, 100.0}
     };
-
+    
+    if (!alert) 
+    {
+        alert = defaultAlert;
+    }
     for (int i = 0; i < 3; ++i) 
     {
-        if (!checkVital(vitals[i], alert)) 
-        {
-            return 0;
-        }
+        allVitalsOk = checkVital(vitals[i], alert) && allVitalsOk;
     }
-
-    return 1;
+    return allVitalsOk;
 }
