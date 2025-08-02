@@ -1,7 +1,7 @@
-#include <gtest/gtest.h>         // ✅ C++ system header
-#include <vector>                // ✅ C++ system header
-#include <string>                // ✅ C++ system header
-#include "./monitor.h"           // ✅ Project header
+#include <gtest/gtest.h>         
+#include <vector>                
+#include <string>                
+#include "./monitor.h"          
 
 TEST(Monitor, TemperatureOutOfRangeHigh) {
     ASSERT_FALSE(vitalsOk(103.0, 70, 95));
@@ -36,3 +36,4 @@ TEST(Monitor, CustomAlertCapturesMessages) {
     ASSERT_EQ(messages.size(), 1);
     ASSERT_EQ(messages[0], "Pulse Rate is out of range!");
 }
+
