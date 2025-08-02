@@ -1,7 +1,7 @@
-#include "./monitor.h"
-#include <gtest/gtest.h>
-#include <vector>
-#include <string>
+#include <gtest/gtest.h>         // ✅ C++ system header
+#include <vector>                // ✅ C++ system header
+#include <string>                // ✅ C++ system header
+#include "./monitor.h"           // ✅ Project header
 
 TEST(Monitor, TemperatureOutOfRangeHigh) {
     ASSERT_FALSE(vitalsOk(103.0, 70, 95));
