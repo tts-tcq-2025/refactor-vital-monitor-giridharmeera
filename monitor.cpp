@@ -2,7 +2,7 @@
 #include <thread>
 #include <chrono>
 #include <string>
-#include "./monitor.h"
+#include "./monitor.hpp"
 
 using std::cout, std::flush;
 using std::this_thread::sleep_for;
