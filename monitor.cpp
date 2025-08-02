@@ -32,7 +32,7 @@ int vitalsOk(float temperature, float pulseRate, float spo2,
         alert = defaultAlert;
     }
 
- const VitalCheck vitals[] = {
+const VitalCheck vitals[] = {
         {"Temperature", temperature, 95.0, 102.0},
         {"Pulse Rate", pulseRate, 60.0, 100.0},
         {"Oxygen Saturation", spo2, 90.0, 100.0}
