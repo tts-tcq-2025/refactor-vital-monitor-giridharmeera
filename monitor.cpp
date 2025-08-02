@@ -1,16 +1,16 @@
-#include "./monitor.h"
-#include <assert.h>
+#include <iostream>
 #include <thread>
 #include <chrono>
-#include <iostream>
-using std::cout, std::flush, std::this_thread::sleep_for, std::chrono::seconds;
+#include <string>
+#include "./monitor.h"
 
-// Default alert: console output with blinking stars
-void defaultAlert(const std::string& message) 
-{
+using std::cout, std::flush;
+using std::this_thread::sleep_for;
+using std::chrono::seconds;
+
+void defaultAlert(const std::string& message) {
     cout << message << "\n";
-    for (int i = 0; i < 6; ++i) 
-    {
+    for (int i = 0; i < 6; ++i) {
         cout << "\r* " << flush;
         sleep_for(seconds(1));
         cout << "\r *" << flush;
@@ -18,35 +18,30 @@ void defaultAlert(const std::string& message)
     }
 }
 
-// Check one vital
-bool checkVital(const VitalCheck& vital, std::function<void(const std::string&)> alert) 
-{
-    if (vital.value < vital.min || vital.value > vital.max) 
-    {
+bool checkVital(const VitalCheck& vital, std::function<void(const std::string&)> alert) {
+    if (vital.value < vital.min || vital.value > vital.max) {
         alert(vital.name + " is out of range!");
         return false;
     }
     return true;
 }
 
-// Main function to check all vitals 
-int vitalsOk(float temperature, float pulseRate, float spo2, std::function<void(const std::string&)> alert) 
-{
-    bool allVitalsOk = true;
-    VitalCheck vitals[] = 
-    {
+int vitalsOk(float temperature, float pulseRate, float spo2,
+             std::function<void(const std::string&)> alert) {
+    if (!alert) {
+        alert = defaultAlert;
+    }
+
+    VitalCheck vitals[] = {
         {"Temperature", temperature, 95.0, 102.0},
         {"Pulse Rate", pulseRate, 60.0, 100.0},
         {"Oxygen Saturation", spo2, 90.0, 100.0}
     };
-    
-    if (!alert) 
-    {
-        alert = defaultAlert;
-    }
-    for (int i = 0; i < 3; ++i) 
-    {
+
+    bool allVitalsOk = true;
+    for (int i = 0; i < 3; ++i) {
         allVitalsOk = checkVital(vitals[i], alert) && allVitalsOk;
     }
+
     return allVitalsOk;
 }
