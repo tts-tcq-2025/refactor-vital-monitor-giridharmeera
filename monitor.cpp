@@ -8,16 +8,6 @@ using std::cout, std::flush;
 using std::this_thread::sleep_for;
 using std::chrono::seconds;
 
-void PrintAlertMessage(const std::string& message) {
-    cout << message << "\n";
-    for (int i = 0; i < 6; ++i) {
-        cout << "\r* " << flush;
-        sleep_for(seconds(1));
-        cout << "\r *" << flush;
-        sleep_for(seconds(1));
-    }
-}
-
 bool checkVital(const VitalCheck& vital, std::function<void(const std::string&)> alert) {
     if (vital.value < vital.min || vital.value > vital.max) {
         alert(vital.name + " is out of range!");
