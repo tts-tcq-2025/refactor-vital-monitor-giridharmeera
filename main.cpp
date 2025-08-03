@@ -1,4 +1,4 @@
-#include <iostream>
+/* #include <iostream>
 #include <thread>
 #include <string>
 #include <chrono>
@@ -20,4 +20,4 @@ void PrintAlertMessage(const std::string& message) {
 
 int main() {
     vitalsOk(103.0, 70, 95,PrintAlertMessage);
-}
+} */
