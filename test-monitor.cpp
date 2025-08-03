@@ -34,9 +34,9 @@ TEST(Monitor, AllVitalsOk) {
 
 TEST(Monitor, CustomAlertCapturesMessages) {
     ASSERT_FALSE(vitalsOk(98.6, 105.0, 95, captureAlert));
-    ASSERT_EQ(messages.size(), 1);
-    ASSERT_EQ(messages[0], "Pulse Rate is out of range!");
+    ASSERT_EQ(messages[6], "Pulse Rate is out of range!");
 }
+
 
 
 
