@@ -42,6 +42,3 @@ const VitalCheck vitals[] = {
     return allVitalsOk;
 }
 
-int main() {
-    vitalsOk(103.0, 70, 95,PrintAlertMessage);
-}
