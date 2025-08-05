@@ -8,6 +8,8 @@ using std::cout, std::flush;
 using std::this_thread::sleep_for;
 using std::chrono::seconds;
 
+bool checkVital(const VitalCheck& vital, std::function<void(const std::string&)> alert);
+
 void PrintAlertMessage(const std::string& message) {
     cout << message << "\n";
     for (int i = 0; i < 6; ++i) {
