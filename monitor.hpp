@@ -9,7 +9,6 @@ struct VitalCheck {
     float max;
 };
 
-bool checkVital(const VitalCheck& vital, std::function<void(const std::string&)> alert);
-
-int vitalsOk(float temperature, float pulseRate, float spo2,
+int areAllVitalsNormal(float temperature, float pulseRate, float spo2,
              std::function<void(const std::string&)> alert = nullptr);
+
