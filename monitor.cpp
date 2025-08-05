@@ -1,38 +1,46 @@
-#include "./monitor.h"
-#include <assert.h>
+#include <iostream>
 #include <thread>
 #include <chrono>
-#include <iostream>
-using std::cout, std::flush, std::this_thread::sleep_for, std::chrono::seconds;
+#include <string>
+#include "./monitor.hpp"
 
-int vitalsOk(float temperature, float pulseRate, float spo2) {
-  if (temperature > 102 || temperature < 95) {
-    cout << "Temperature is critical!\n";
-    for (int i = 0; i < 6; i++) {
-      cout << "\r* " << flush;
-      sleep_for(seconds(1));
-      cout << "\r *" << flush;
-      sleep_for(seconds(1));
+using std::cout, std::flush;
+using std::this_thread::sleep_for;
+using std::chrono::seconds;
+
+bool checkVital(const VitalCheck& vital, std::function<void(const std::string&)> alert);
+
+void PrintAlertMessage(const std::string& message) {
+    cout << message << "\n";
+    for (int i = 0; i < 6; ++i) {
+        cout << "\r* " << flush;
+        sleep_for(seconds(1));
+        cout << "\r *" << flush;
+        sleep_for(seconds(1));
     }
-    return 0;
-  } else if (pulseRate < 60 || pulseRate > 100) {
-    cout << "Pulse Rate is out of range!\n";
-    for (int i = 0; i < 6; i++) {
-      cout << "\r* " << flush;
-      sleep_for(seconds(1));
-      cout << "\r *" << flush;
-      sleep_for(seconds(1));
-    }
-    return 0;
-  } else if (spo2 < 90) {
-    cout << "Oxygen Saturation out of range!\n";
-    for (int i = 0; i < 6; i++) {
-      cout << "\r* " << flush;
-      sleep_for(seconds(1));
-      cout << "\r *" << flush;
-      sleep_for(seconds(1));
-    }
-    return 0;
-  }
-  return 1;
 }
+
+bool checkVital(const VitalCheck& vital, std::function<void(const std::string&)> alert) {
+    if (vital.value < vital.min || vital.value > vital.max) {
+        alert(vital.name + " is out of range!");
+        return false;
+    }
+    return true;
+}
+
+int areAllVitalsNormal(float temperature, float pulseRate, float spo2,
+             std::function<void(const std::string&)> alert) {
+const VitalCheck vitals[] = {
+        {"Temperature", temperature, 95.0, 102.0},
+        {"Pulse Rate", pulseRate, 60.0, 100.0},
+        {"Oxygen Saturation", spo2, 90.0, 100.0}
+    };
+
+    bool allVitalsOk = true;
+    for (int i = 0; i < 3; ++i) {
+        allVitalsOk = checkVital(vitals[i], alert) && allVitalsOk;
+    }
+
+    return allVitalsOk;
+}
+
