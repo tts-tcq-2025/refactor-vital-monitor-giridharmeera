@@ -1,7 +1,6 @@
 #pragma once
 #include "types.hpp"
 
-// Small inline helpers live in the header as they’re tiny.
 static inline bool inRange(float x, float lo, float hi) {
     return x >= lo && x <= hi;
 }
