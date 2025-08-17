@@ -36,7 +36,7 @@ int areAllVitalsNormal(float temperature,
     // Normalize temp to Fahrenheit (canonical)
     const float tempF = normalizeTemperature(temperature, tempUnit);
 
-    // Canonical limits (same as your original)
+    // Canonical limits 
     VitalCheck temp   {"Temperature",       tempF,      95.0f, 102.0f};
     VitalCheck pulse  {"Pulse Rate",        pulseRate,  60.0f, 100.0f};
     VitalCheck oxygen {"Oxygen Saturation", spo2,       90.0f, 100.0f};
