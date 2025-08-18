@@ -1,10 +1,10 @@
 #include <map>
-#include "monitor/localize.hpp"
+#include "monitor/language_selector.hpp"
 
 Language g_language = Language::EN; // default
 
 // Key format: "<vital>|<band>"
-static std::map<std::string, std::string> EN_MAP = {
+static std::map<std::string, std::string> EN_MESSAGE = {
     {"Temperature|LOW_BREACH",  "Temperature is out of range! Hypothermia"},
     {"Temperature|NEAR_LOW",    "Warning: Approaching hypothermia"},
     {"Temperature|NORMAL",      "Temperature is normal"},
@@ -24,7 +24,7 @@ static std::map<std::string, std::string> EN_MAP = {
     {"Oxygen Saturation|HIGH_BREACH", "SpO2 reading above configured max"},
 };
 
-static std::map<std::string, std::string> DE_MAP = {
+static std::map<std::string, std::string> DE_MESSAGE = {
     {"Temperature|LOW_BREACH",  "Temperatur außerhalb des Bereichs! Unterkühlung"},
     {"Temperature|NEAR_LOW",    "Warnung: Annäherung an Unterkühlung"},
     {"Temperature|NORMAL",      "Temperatur ist normal"},
@@ -54,14 +54,14 @@ static const std::map<VitalBand, const char*> BAND_KEY = {
 
 static std::string lookupMessage(const std::string& vitalName, VitalBand band) {
     std::string key = vitalName + "|" + BAND_KEY.at(band);
-    const auto& langMap = (g_language == Language::DE) ? DE_MAP : EN_MAP;
+    const auto& langMap = (g_language == Language::DE) ? DE_MESSAGE : EN_MESSAGE;
     auto it = langMap.find(key);
     if (it != langMap.end()) return it->second;
-    auto it2 = EN_MAP.find(key);
-    return (it2 != EN_MAP.end()) ? it2->second : (vitalName + " status");
+    auto it2 = EN_MESSAGE.find(key);
+    return (it2 != EN_MESSAGE.end()) ? it2->second : (vitalName + " status");
 }
 
-std::string messageFor(const ClassifiedVital& cv) {
+std::string Message(const ClassifiedVital& cv) {
     return lookupMessage(cv.canonical.name, cv.band);
 }
 

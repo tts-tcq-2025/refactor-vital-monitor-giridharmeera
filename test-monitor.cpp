@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include "monitor.hpp"
-#include "monitor/localize.hpp"
+#include "monitor/language_selector.hpp"
 
 static std::vector<std::string> messages;
 static auto captureAlert = [](const std::string& msg) { messages.push_back(msg); };

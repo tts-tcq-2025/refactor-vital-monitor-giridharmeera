@@ -1,6 +1,6 @@
 #include <iostream>
 #include "monitor.hpp"
-#include "monitor/localize.hpp"
+#include "monitor/language_selector.hpp"
 
 static void printAlert(const std::string& msg) { std::cout << "[ALERT] " << msg << "\n"; }
 

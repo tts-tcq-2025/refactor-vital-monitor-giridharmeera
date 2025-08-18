@@ -5,7 +5,7 @@
 #include "monitor/api.hpp"
 #include "monitor/units.hpp"
 #include "monitor/classify.hpp"
-#include "monitor/localize.hpp"
+#include "monitor/language_selector.hpp"
 
 using namespace std::chrono;
 
@@ -49,7 +49,7 @@ int areAllVitalsNormal(float temperature,
         ClassifiedVital cv{v, band};
 
         if (band != VitalBand::NORMAL && alert) {
-            alert(messageFor(cv));
+            alert(Message(cv));
         }
         if (band != VitalBand::NORMAL) {
             allNormal = false;
