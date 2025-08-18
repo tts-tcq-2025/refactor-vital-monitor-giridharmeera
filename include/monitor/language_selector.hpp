@@ -5,6 +5,5 @@
 // Localized user message for a classified vital
 std::string Message(const ClassifiedVital& cv);
 
-// Optional conveniences (you can still set g_language directly)
 void setLanguage(Language lang);
 Language getLanguage();

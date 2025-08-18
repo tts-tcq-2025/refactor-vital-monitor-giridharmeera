@@ -46,3 +46,24 @@ Shorten the Semantic distance
 - Functional to express relation between input and output
 - Object oriented to encapsulate state with actions
 - Aspect oriented to capture repeating aspects
+
+## Extentions
+Extension 1: Early Warning
+
+Care-givers need early warnings to take action, in addition to the alarm that you print after the limit is breached. Introduce a 'warning' level with a tolerance of 1.5% of the upper-limit.
+
+Example: If the body-temperature extremeties are 95 and 102, the warning-tolerance is 1.5% of 102 = 1.53. Warnings need to be displayed in these ranges:
+
+    95 to 95+1.53 Warning: Approaching hypothermia
+    102-1.53 to 102 Warning: Approaching hyperthermia
+
+Same for pulse-rate and SPO2.
+Extension 2: Support a language in addition to English
+
+Our market has expanded to German-speaking countries! Switch the language of the printed user-messages based on a global variable.
+
+Use Google translate if you aren't familiar with German.
+
+Keep in mind: We could add more languages in future. Minimize the code-change required.
+Extension 3: Accept input in different units
+Some sensors report the temperature in Celcius. Make provision to express the unit along with the measurement. Avoid repeating the limits in different units.
