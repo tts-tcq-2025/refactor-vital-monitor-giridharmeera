@@ -19,13 +19,22 @@ void PrintAlertMessage(const std::string& message) {
     }
 }
 
+// api.cpp
 bool checkVital(const VitalCheck& vital,
                 std::function<void(const std::string&)> alert) {
-    if (vital.value < vital.min || vital.value > vital.max) {
-        if (alert) alert(vital.name + " is out of range!");
-        return false;
+    const bool breach = (vital.value < vital.min) || (vital.value > vital.max);
+    if (alert && breach) alert(vital.name + " is out of range!");
+    return !breach;
+}
+
+static bool isNormalAndNotify(const VitalCheck& v,
+                              const std::function<void(const std::string&)>& alert) {
+    const VitalBand band = classify(v);
+    if (band != VitalBand::NORMAL && alert) {
+        ClassifiedVital cv{v, band};
+        alert(Message(cv));
     }
-    return true;
+    return band == VitalBand::NORMAL;
 }
 
 int areAllVitalsNormal(float temperature,
@@ -33,27 +42,17 @@ int areAllVitalsNormal(float temperature,
                        float spo2,
                        std::function<void(const std::string&)> alert,
                        TempUnit tempUnit) {
-    // Normalize temp to Fahrenheit (canonical)
     const float tempF = normalizeTemperature(temperature, tempUnit);
 
-    // Canonical limits 
-    VitalCheck temp   {"Temperature",       tempF,      95.0f, 102.0f};
-    VitalCheck pulse  {"Pulse Rate",        pulseRate,  60.0f, 100.0f};
-    VitalCheck oxygen {"Oxygen Saturation", spo2,       90.0f, 100.0f};
+    const VitalCheck temp   {"Temperature",       tempF,      95.0f, 102.0f};
+    const VitalCheck pulse  {"Pulse Rate",        pulseRate,  60.0f, 100.0f};
+    const VitalCheck oxygen {"Oxygen Saturation", spo2,       90.0f, 100.0f};
 
-    std::vector<VitalCheck> vitals = {temp, pulse, oxygen};
+    const VitalCheck vitals[] = {temp, pulse, oxygen};
 
     bool allNormal = true;
     for (const auto& v : vitals) {
-        VitalBand band = classify(v);
-        ClassifiedVital cv{v, band};
-
-        if (band != VitalBand::NORMAL && alert) {
-            alert(Message(cv));
-        }
-        if (band != VitalBand::NORMAL) {
-            allNormal = false;
-        }
+        allNormal = isNormalAndNotify(v, alert) && allNormal; // no if here
     }
     return allNormal ? 1 : 0;
 }
