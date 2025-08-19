@@ -19,14 +19,6 @@ void PrintAlertMessage(const std::string& message) {
     }
 }
 
-// api.cpp
-bool checkVital(const VitalCheck& vital,
-                std::function<void(const std::string&)> alert) {
-    const bool breach = (vital.value < vital.min) || (vital.value > vital.max);
-    if (alert && breach) alert(vital.name + " is out of range!");
-    return !breach;
-}
-
 static bool isNormalAndNotify(const VitalCheck& v,
                               const std::function<void(const std::string&)>& alert) {
     const VitalBand band = classify(v);
@@ -52,7 +44,7 @@ int areAllVitalsNormal(float temperature,
 
     bool allNormal = true;
     for (const auto& v : vitals) {
-        allNormal = isNormalAndNotify(v, alert) && allNormal; // no if here
+        allNormal = isNormalAndNotify(v, alert) && allNormal;
     }
     return allNormal ? 1 : 0;
 }
