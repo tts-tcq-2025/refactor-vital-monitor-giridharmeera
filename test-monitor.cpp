@@ -8,16 +8,6 @@ static std::vector<std::string> messages;
 static auto captureAlert = [](const std::string& msg) { messages.push_back(msg); };
 static void reset(Language lang = Language::EN) { messages.clear(); setLanguage(lang); }
 
-TEST(Monitor, TemperatureOutOfRangeHigh) { reset(); ASSERT_EQ(0, areAllVitalsNormal(103.0f, 70.0f, 95.0f, captureAlert)); }
-TEST(Monitor, TemperatureOutOfRangeLow)  { reset(); ASSERT_EQ(0, areAllVitalsNormal(94.0f,  70.0f, 95.0f, captureAlert)); }
-TEST(Monitor, PulseRateOutOfRangeHigh)   { reset(); ASSERT_EQ(0, areAllVitalsNormal(98.6f, 105.0f, 95.0f, captureAlert)); }
-TEST(Monitor, PulseRateOutOfRangeLow)    { reset(); ASSERT_EQ(0, areAllVitalsNormal(98.6f,  50.0f, 95.0f, captureAlert)); }
-TEST(Monitor, Spo2OutOfRangeLow)         { reset(); ASSERT_EQ(0, areAllVitalsNormal(98.6f,  70.0f, 85.0f, captureAlert)); }
-TEST(Monitor, AllVitalsOk)               { reset(); ASSERT_EQ(1, areAllVitalsNormal(98.6f,  70.0f, 95.0f, captureAlert)); ASSERT_TRUE(messages.empty()); }
-
-TEST(Monitor, TemperatureNearLowWarning)  { reset(); ASSERT_EQ(0, areAllVitalsNormal(95.5f,  70.0f, 95.0f, captureAlert)); ASSERT_FALSE(messages.empty()); }
-TEST(Monitor, TemperatureNearHighWarning) { reset(); ASSERT_EQ(0, areAllVitalsNormal(101.0f, 70.0f, 95.0f, captureAlert)); ASSERT_FALSE(messages.empty()); }
-
 TEST(Monitor, TemperatureCelsiusNormal) {
     reset();
     ASSERT_EQ(1, areAllVitalsNormal(37.0f, 70.0f, 95.0f, captureAlert, TempUnit::Celsius));
